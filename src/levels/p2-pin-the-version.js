@@ -11,7 +11,7 @@ const vulnerableCode = [
 export default {
   id: 'p2-pin-the-version',
   incidentId: null,
-  title: t('Pin the version', 'נעץ את הגרסה'),
+  title: t('Pin the version', 'לנעוץ את הגרסה'),
   intro: t(
     'The tag "latest" changes without warning. Your build can break on a day you changed nothing.',
     'התג "latest" משתנה בלי התראה. הבנייה יכולה להישבר ביום שלא שינית בו כלום.'
@@ -42,9 +42,9 @@ export default {
     attackPath: ['reg', 'build'],
   },
   hints: [
-    t('Look at the first line. Which version does it ask for?', 'הסתכל על השורה הראשונה. איזו גרסה היא מבקשת?'),
+    t('Look at the first line. Which version does it ask for?', 'להסתכל על השורה הראשונה. איזו גרסה היא מבקשת?'),
     t('`python:latest` is not a version.', '`python:latest` היא לא גרסה.'),
-    t('Use a specific tag such as `python:3.12.4-slim`.', 'השתמש בתג מדויק כמו `python:3.12.4-slim`.'),
+    t('Use a specific tag such as `python:3.12.4-slim`.', 'להשתמש בתג מדויק כמו `python:3.12.4-slim`.'),
   ],
   check: checkPin,
   choices: [
@@ -55,9 +55,9 @@ export default {
         why: t('A minor line is pinned enough to stay predictable.', 'קו גרסה משני מספיק יציב כדי להיות צפוי.') },
       { id: 'major', label: t('python:3', 'python:3'), replace: 'FROM python:3', good: false,
         why: t('Major only still moves under you.', 'גרסה ראשית בלבד עדיין זזה מתחתיך.') },
-      { id: "stable", label: t("Use the stable tag", "השתמש בתג stable"), replace: 'FROM python:stable', good: false,
+      { id: "stable", label: t("Use the stable tag", "להשתמש בתג stable"), replace: 'FROM python:stable', good: false,
         why: t("That is a moving name, not a version. It can still change.", "זה שם שזז ולא גרסה. הוא עדיין יכול להשתנות.") },
-      { id: "slim", label: t("Use the slim tag", "השתמש בתג slim"), replace: 'FROM python:slim', good: false,
+      { id: "slim", label: t("Use the slim tag", "להשתמש בתג slim"), replace: 'FROM python:slim', good: false,
         why: t("Smaller, but still not a version number.", "קטן יותר, אבל עדיין לא מספר גרסה.") },
     ]),
   ],

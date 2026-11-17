@@ -61,18 +61,18 @@ export default {
   hints: [
     t('Two separate things are too open: how credentials are fetched, and what they may do.', 'שני דברים פתוחים מדי: איך מביאים את פרטי הגישה, ומה מותר להם לעשות.'),
     t('http_tokens is optional, and the policy allows s3:* on every resource.', 'http_tokens אופציונלי, והמדיניות מתירה s3:* על כל משאב.'),
-    t('Require tokens, then allow only a specific action on a specific bucket ARN.', 'דרוש טוקנים, ואז אפשר רק פעולה ספציפית על ARN של bucket ספציפי.'),
+    t('Require tokens, then allow only a specific action on a specific bucket ARN.', 'לדרוש טוקנים, ואז לאפשר רק פעולה ספציפית על ARN של bucket ספציפי.'),
   ],
   check,
   choices: [
     group('tokens', ['imds-v1'], TOKENS, [
-      { id: 'required', label: t('Require session tokens (IMDSv2)', 'דרוש טוקן סשן (IMDSv2)'), replace: 'http_tokens = "required"', good: true,
+      { id: 'required', label: t('Require session tokens (IMDSv2)', 'נדרש טוקן סשן (IMDSv2)'), replace: 'http_tokens = "required"', good: true,
         why: t('A simple forwarded request can no longer read credentials.', 'בקשה מועברת פשוטה כבר לא יכולה לקרוא פרטי גישה.') },
-      { id: 'hop', label: t('Required, hop limit 1', 'דרוש, hop limit 1'), replace: 'http_tokens = "required"\n    http_put_response_hop_limit = 1', good: true,
+      { id: 'hop', label: t('Required, hop limit 1', 'נדרש, hop limit 1'), replace: 'http_tokens = "required"\n    http_put_response_hop_limit = 1', good: true,
         why: t('Tokens are required, and containers cannot reach the service through a hop.', 'טוקנים נדרשים, וקונטיינרים לא מגיעים לשירות דרך hop.') },
-      { id: 'limit-only', label: t('Only lower the hop limit', 'רק הורד את hop limit'), replace: TOKENS + '\n    http_put_response_hop_limit = 1', good: false,
+      { id: 'limit-only', label: t('Only lower the hop limit', 'רק להוריד את hop limit'), replace: TOKENS + '\n    http_put_response_hop_limit = 1', good: false,
         why: t('Tokens are still optional.', 'הטוקנים עדיין אופציונליים.') },
-      { id: "tags", label: t("Turn off the instance tags in the metadata service", "כבה את תגיות המופע בשירות המטא-דאטה"), replace: TOKENS + '\n    instance_metadata_tags = "disabled"', good: false,
+      { id: "tags", label: t("Turn off the instance tags in the metadata service", "לכבות את תגיות המופע בשירות המטא-דאטה"), replace: TOKENS + '\n    instance_metadata_tags = "disabled"', good: false,
         why: t("That hides some data, but tokens are still optional.", "זה מסתיר חלק מהמידע, אבל הטוקנים עדיין אופציונליים.") },
     ]),
     group('actions', ['wildcard-action'], ACTIONS, [
@@ -80,7 +80,7 @@ export default {
         why: t('Read objects, nothing else.', 'קריאת אובייקטים, לא יותר.') },
       { id: 'getlist', label: t('GetObject and ListBucket', 'GetObject ו-ListBucket'), replace: 'actions   = ["s3:GetObject", "s3:ListBucket"]', good: true,
         why: t('Two specific actions the app really needs.', 'שתי פעולות ספציפיות שהאפליקציה באמת צריכה.') },
-      { id: 'mixed', label: t('Add GetObject, keep s3:*', 'הוסף GetObject, השאר s3:*'), replace: 'actions   = ["s3:*", "s3:GetObject"]', good: false,
+      { id: 'mixed', label: t('Add GetObject, keep s3:*', 'להוסיף GetObject, להשאיר s3:*'), replace: 'actions   = ["s3:*", "s3:GetObject"]', good: false,
         why: t('The wildcard is still in the list.', 'ה-wildcard עדיין ברשימה.') },
     ]),
     group('resources', ['wildcard-resource'], RESOURCES, [
@@ -88,7 +88,7 @@ export default {
         why: t('The role reaches one bucket only.', 'התפקיד מגיע ל-bucket אחד בלבד.') },
       { id: 'all-s3', label: t('All buckets', 'כל ה-buckets'), replace: 'resources = ["arn:aws:s3:::*"]', good: false,
         why: t('Every bucket is still included.', 'כל ה-buckets עדיין כלולים.') },
-      { id: "account", label: t("Keep * but say it is for this account only", "השאר * אבל כתוב שזה לחשבון הזה בלבד"), replace: RESOURCES + '  # this account only', good: false,
+      { id: "account", label: t("Keep * but say it is for this account only", "להשאיר * אבל לכתוב שזה לחשבון הזה בלבד"), replace: RESOURCES + '  # this account only', good: false,
         why: t("A note changes nothing. The role can still reach every resource.", "הערה לא משנה כלום. התפקיד עדיין יכול להגיע לכל משאב.") },
     ]),
   ],

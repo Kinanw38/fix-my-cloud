@@ -20,8 +20,6 @@ You are the on-call engineer. Find the mistake, fix it, and watch the night turn
 
 **[Play it live](https://Kinanw38.github.io/fix-my-cloud/)**
 
-<img src="docs/media/home.png" alt="The opening page with an animated example" width="760">
-
 </div>
 
 ## What it is
@@ -35,13 +33,23 @@ door locks and the sun rises. Then you see your change as a pull request and wha
 - Hebrew and English, with right-to-left layout. Works on phone and desktop.
 - 100% in the browser. No server, no tracking, no cookies.
 
-<p align="center">
-  <img src="docs/media/level.png" alt="A level: the file, the fix choices and the map" width="49%">
-  <img src="docs/media/fixed.png" alt="After a fix: the door is locked and the lesson is shown" width="49%">
-</p>
-<p align="center">
-  <img src="docs/media/mobile-he.png" alt="The same game on a phone, in Hebrew" width="26%">
-</p>
+## Walkthrough
+
+**1. The opening page.** A short explanation, the three steps, and a small animated example of a real solution.
+
+<p align="center"><img src="docs/media/home.png" alt="The opening page with an animated example" width="720"></p>
+
+**2. The briefing.** Every level starts with a short story: what happened, what is wrong, and your goal.
+
+<p align="center"><img src="docs/media/briefing.png" alt="A level briefing" width="720"></p>
+
+**3. Find and fix.** Read the file, tap the line that causes the problem, then pick a ready-made fix or type your own. The map shows what the mistake exposes.
+
+<p align="center"><img src="docs/media/level.png" alt="The work screen: the file, the fix choices and the map" width="720"></p>
+
+**4. Door locked.** Run the checks. If the fix is right, the door locks and the sun rises. Then you see your change as a pull request and what you learned.
+
+<p align="center"><img src="docs/media/fixed.png" alt="After a fix: the door is locked" width="720"></p>
 
 | Level | Topic |
 |---|---|

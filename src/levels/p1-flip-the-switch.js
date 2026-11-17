@@ -11,7 +11,7 @@ const vulnerableCode = [
 export default {
   id: 'p1-flip-the-switch',
   incidentId: null,
-  title: t('Flip the switch', 'הפוך את המתג'),
+  title: t('Flip the switch', 'להפוך את המתג'),
   intro: t(
     'A fictional internal service is reachable from the internet. One line decides that.',
     'שירות פנימי מדומיין חשוף לאינטרנט. שורה אחת קובעת את זה.'
@@ -41,22 +41,22 @@ export default {
     attackPath: ['net', 'svc'],
   },
   hints: [
-    t('Look for a setting that says who can reach the service.', 'חפש הגדרה שקובעת מי יכול להגיע לשירות.'),
+    t('Look for a setting that says who can reach the service.', 'לחפש הגדרה שקובעת מי יכול להגיע לשירות.'),
     t('The line `public: true` is the problem.', 'השורה `public: true` היא הבעיה.'),
-    t('Change it to `public: false`.', 'שנה אותה ל-`public: false`.'),
+    t('Change it to `public: false`.', 'לשנות אותה ל-`public: false`.'),
   ],
   check: checkSwitch,
   choices: [
     group('public', ['service-public'], 'public: true', [
-      { id: 'false', label: t('Set public to false', 'קבע public ל-false'), replace: 'public: false', good: true,
+      { id: 'false', label: t('Set public to false', 'לקבוע public ל-false'), replace: 'public: false', good: true,
         why: t('The service is no longer reachable from outside.', 'השירות כבר לא נגיש מבחוץ.') },
-      { id: 'quoted', label: t('Keep it and add a note', 'השאר והוסף הערה'), replace: 'public: "true"', good: false,
+      { id: 'quoted', label: t('Keep it and add a note', 'להשאיר ולהוסיף הערה'), replace: 'public: "true"', good: false,
         why: t('A quoted true is still true. Nothing changed.', 'true במרכאות עדיין true. כלום לא השתנה.') },
-      { id: "internal", label: t("Make it private and allow internal traffic only", "הפוך אותו לפרטי ואפשר רק תעבורה פנימית"), replace: 'public: false\n  allow: internal-only', good: true,
+      { id: "internal", label: t("Make it private and allow internal traffic only", "להפוך אותו לפרטי ולאפשר רק תעבורה פנימית"), replace: 'public: false\n  allow: internal-only', good: true,
         why: t("Only your own network can reach it.", "רק הרשת שלך יכולה להגיע אליו.") },
-      { id: "password", label: t("Keep it public, but add a password", "השאר אותו ציבורי, אבל הוסף סיסמה"), replace: 'public: true\n  password: required', good: false,
+      { id: "password", label: t("Keep it public, but add a password", "להשאיר אותו ציבורי, אבל להוסיף סיסמה"), replace: 'public: true\n  password: required', good: false,
         why: t("A password helps, but anyone can still reach the door. An internal service should not be public at all.", "סיסמה עוזרת, אבל כל אחד עדיין יכול להגיע לדלת. שירות פנימי לא צריך להיות ציבורי בכלל.") },
-      { id: "hide", label: t("Give it a name that is hard to guess", "תן לו שם שקשה לנחש"), replace: 'public: true\n  hostname: hidden-billing', good: false,
+      { id: "hide", label: t("Give it a name that is hard to guess", "לתת לו שם שקשה לנחש"), replace: 'public: true\n  hostname: hidden-billing', good: false,
         why: t("Hiding is not protecting. Scanners find open services by address, not by name.", "הסתרה היא לא הגנה. סורקים מוצאים שירותים פתוחים לפי כתובת, לא לפי שם.") },
     ]),
   ],

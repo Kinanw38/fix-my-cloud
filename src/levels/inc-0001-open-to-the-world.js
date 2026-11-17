@@ -31,9 +31,9 @@ const opts = (port) => [
     why: t('Access goes through the VPN.', 'הגישה עוברת דרך ה-VPN.') },
   { id: 'both', label: t('Office plus everyone', 'המשרד ועוד כולם'), replace: to(port, '"203.0.113.0/24", "0.0.0.0/0"'), good: false,
     why: t('The world range is still in the list.', 'הטווח הפתוח עדיין ברשימה.') },
-  { id: "note", label: t("Mark the rule as admins only", "סמן את הכלל כ\"למנהלים בלבד\""), replace: anchor(port) + '\n    # admins only', good: false,
+  { id: "note", label: t("Mark the rule as admins only", "לסמן את הכלל כ\"למנהלים בלבד\""), replace: anchor(port) + '\n    # admins only', good: false,
     why: t("A note does not close a port. The whole internet can still connect.", "הערה לא סוגרת פורט. כל האינטרנט עדיין יכול להתחבר.") },
-  { id: "port", label: t("Move it to a different port", "העבר אותו לפורט אחר"), replace: to(port, '"0.0.0.0/0"').replace(`to_port     = ${port}`, `to_port     = ${port + 1}`), good: false,
+  { id: "port", label: t("Move it to a different port", "להעביר אותו לפורט אחר"), replace: to(port, '"0.0.0.0/0"').replace(`to_port     = ${port}`, `to_port     = ${port + 1}`), good: false,
     why: t("The rule still covers the old port, and everyone can still try the new one.", "הכלל עדיין מכסה את הפורט הישן, וכל אחד עדיין יכול לנסות את החדש.") },
 ];
 
@@ -72,9 +72,9 @@ export default {
     attackPath: ['net', 'sg', 'web', 'db'],
   },
   hints: [
-    t('Look at who may connect, not only at which port.', 'הסתכל על מי מורשה להתחבר, לא רק על איזה פורט.'),
+    t('Look at who may connect, not only at which port.', 'להסתכל על מי מורשה להתחבר, לא רק על איזה פורט.'),
     t('Two ingress rules open management and database ports to 0.0.0.0/0.', 'שני כללי כניסה פותחים פורטי ניהול ובסיס נתונים ל-0.0.0.0/0.'),
-    t('Replace the world range with your office range, or remove the rule.', 'החלף את הטווח הפתוח בטווח של המשרד, או הסר את הכלל.'),
+    t('Replace the world range with your office range, or remove the rule.', 'להחליף את הטווח הפתוח בטווח של המשרד, או להסיר את הכלל.'),
   ],
   check,
   choices: [

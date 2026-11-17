@@ -167,5 +167,6 @@ export default {
   "log.reset": "Code reset.",
   "log.inspect": "Inspecting the server.",
   "footer.legal": "Independent educational project. Not affiliated with or endorsed by Amazon Web Services or any company mentioned. AWS is a trademark of Amazon.com, Inc. or its affiliates. Scenarios are simplified recreations based on public reports.",
+  "footer.gender": "The Hebrew wording is written for everyone, of any gender.",
   "footer.practice": "This is a game for practice and fun. Everything in it is simplified and made up. Do not use it as a guide for a real cloud account. No responsibility is taken for use outside the game.",
 };
