@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-motion="off" data-loops="off">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- A meta CSP cannot set frame-ancestors. Real headers need a server. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#0e1626">
+  <title>Fix My Cloud</title>
+  <meta name="description" content="Real incidents. Simplified. Can you fix them before they spread? A free game that teaches DevOps and cloud best practices.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Fix My Cloud">
+  <meta property="og:description" content="Real incidents. Simplified. Can you fix them before they spread?">
+  <meta property="og:image" content="https://Kinanw38.github.io/fix-my-cloud/docs/media/og.png">
+  <meta property="og:url" content="https://Kinanw38.github.io/fix-my-cloud/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fix My Cloud">
+  <meta name="twitter:description" content="Real incidents. Simplified. Can you fix them before they spread?">
+  <meta name="twitter:image" content="https://Kinanw38.github.io/fix-my-cloud/docs/media/og.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1626'/%3E%3Cpath d='M9 21h14a4 4 0 0 0 .6-7.95A6 6 0 0 0 12 12a5 5 0 0 0-3 9z' fill='none' stroke='%23ffd166' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles/fonts.css">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/screen.css">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9 9l6 6M15 9l-6 6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.7 9.6a2.4 2.4 0 1 1 3.6 2c-.9.6-1.3 1.1-1.3 2M12 16.8v.01"/></symbol>
+  <symbol id="i-brand" viewBox="0 0 32 32"><path d="M9 23h14a5 5 0 0 0 .8-9.9A7 7 0 0 0 10.3 11.2 6 6 0 0 0 9 23z"/><rect x="14" y="15.5" width="5" height="7.5" rx="1"/></symbol>
+  <symbol id="i-door-shut" viewBox="0 0 16 22"><rect x="1.5" y="1.5" width="13" height="19" rx="2.5"/><circle cx="11" cy="11.5" r="1.1"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7L4 12l5 5"/><path d="M4 12h9a6 6 0 0 1 0 12"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5L12 4l8 7.5"/><path d="M6.5 10v9.5h11V10"/><path d="M10 19.5v-5h4v5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></symbol>
+</svg>
+
+<div class="banner" id="banner" role="alert" hidden>
+  <span data-t="err.crash"></span>
+  <button class="btn" id="banner-reload" type="button" data-t="btn.reload"></button>
+</div>
+
+<header class="topbar">
+  <a class="brand" href="#/home" data-t-label="app.title"><svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-brand"/></svg><span>Fix My Cloud</span></a>
+  <a class="link topbar__nav" id="nav-home" href="#/home"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"/></svg><span data-t="nav.home"></span></a>
+  <a class="link" id="nav-board" href="#/board" data-t="nav.board"></a>
+  <span class="seg" role="group" data-t-label="lang.label">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="he" aria-pressed="false">עב</button>
+  </span>
+</header>
+
+
+<main class="screen" id="main">
+  <section id="view-home" hidden>
+    <div class="home">
+      <h1 class="home__title" id="home-title" tabindex="-1" data-t="home.title"></h1>
+      <p class="home__pitch" data-t="home.pitch"></p>
+      <div class="actions">
+        <button class="btn btn--primary btn--big" id="home-start" type="button"></button>
+        <button class="btn" id="home-tour" type="button" data-t="home.tour"></button>
+      </div>
+      <p class="home__more">
+        <a class="link" href="#/board" data-t="nav.board"></a>
+        <button class="btn btn--text" id="home-skip" type="button" data-t="welcome.skip"></button>
+      </p>
+      <ol class="home__steps">
+        <li><span class="home__n">1</span><strong data-t="home.h1"></strong><span data-t="home.h1d"></span></li>
+        <li><span class="home__n">2</span><strong data-t="home.h2"></strong><span data-t="home.h2d"></span></li>
+        <li><span class="home__n">3</span><strong data-t="home.h3"></strong><span data-t="home.h3d"></span></li>
+      </ol>
+      <div class="demo" id="demo" role="img" data-t-label="home.demoLabel" data-step="1" data-played="false"></div>
+      <p class="home__replay"><button class="btn btn--text" id="demo-replay" type="button" data-t="home.replay"></button></p>
+      <ul class="home__facts"><li data-t="home.f1"></li><li data-t="home.f2"></li><li data-t="home.f3"></li></ul>
+    </div>
+  </section>
+
+  <section id="view-level" hidden>
+    <div class="stack" id="level-error" hidden>
+      <h1 class="alert" id="level-error-title" tabindex="-1" data-t="err.level"></h1>
+      <p><a class="link" href="#/board" data-t="nav.board"></a></p>
+    </div>
+    <div class="stack brief" id="brief" hidden>
+      <p class="brief__kicker"><span class="inc-id" id="brief-id" hidden></span><span data-t="brief.kicker"></span></p>
+      <h1 class="brief__title" id="brief-title" tabindex="-1"></h1>
+      <div class="brief__grid">
+        <div class="brief__art" id="brief-art" aria-hidden="true"></div>
+        <ol class="brief__story" id="brief-story">
+          <li><strong data-t="brief.what"></strong><p id="brief-what"></p></li>
+          <li><strong data-t="brief.wrong"></strong><p id="brief-wrong"></p></li>
+          <li><strong data-t="brief.goal"></strong><p id="brief-goal"></p></li>
+        </ol>
+      </div>
+      <div class="actions"><button class="btn btn--primary btn--big" id="brief-go" type="button" data-t="brief.go"></button></div>
+    </div>
+    <div class="stack" id="level-body">
+      <div class="levelhead">
+        <p class="levelhead__what"><span class="tag" id="tag-practice" data-t="tag.practice" hidden></span><span class="inc-id" id="inc-id" hidden></span><span class="levelhead__title" id="lvl-title"></span><span class="levelhead__run" id="run-chip" hidden></span><button class="btn btn--text" id="rebrief" type="button" data-t="brief.again"></button></p>
+        <p class="levelhead__meta"><span class="timer"><span class="timer__label" data-t="timer.label"></span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"/></svg><span class="mono" id="timer">00:00</span></span><button class="btn btn--ghost" id="startover" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-undo"/></svg><span data-t="btn.startover"></span></button></p>
+      </div>
+      <section class="task" aria-labelledby="task-goal">
+        <p class="task__alert" id="alert"><span class="alert__lbl"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use id="alert-icon" href="#i-cross"/></svg><span id="alert-label"></span></span><span id="pager"></span></p>
+        <p class="task__label" data-t="task.label"></p>
+        <h1 class="task__goal" id="task-goal" tabindex="-1"><span id="goal-text"></span></h1>
+        <ol class="steps3" id="steps3" data-t-label="stage.label">
+          <li><span class="steps3__n"></span><span data-t="step.1"></span></li>
+          <li><span class="steps3__n"></span><span data-t="step.2"></span></li>
+          <li><span class="steps3__n"></span><span data-t="step.3"></span></li>
+        </ol>
+        <p class="task__now" id="guide" role="status"><span id="guide-text"></span></p>
+      </section>
+
+      <div class="cols">
+        <section class="panel inspector" id="inspector" aria-labelledby="file-title">
+          <div class="panel__head">
+            <h2 class="panel-title file" id="file-title" tabindex="-1"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file"/></svg><span id="file-name"></span></h2>
+            <span class="tag" id="lang-tag"></span>
+          </div>
+          <div class="section">
+            <div class="codebox">
+              <div class="code" id="code" role="region" tabindex="0" dir="ltr" data-t-label="code.region"></div>
+              <textarea class="editor" id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" hidden data-t-label="code.editor"></textarea>
+            </div>
+            <p class="intro-line" id="intro"></p>
+          </div>
+          <div class="section" id="modebox">
+            <h3 class="panel-title" data-t="mode.title"></h3>
+            <div class="modeswitch" id="modeswitch" role="group" data-t-label="mode.title">
+              <button type="button" data-mode="pick" aria-pressed="true"><strong data-t="mode.pick"></strong><span data-t="mode.pickHelp"></span></button>
+              <button type="button" data-mode="write" aria-pressed="false"><strong data-t="mode.write"></strong><span data-t="mode.writeHelp"></span></button>
+            </div>
+          </div>
+          <div class="section" id="choices-wrap">
+            <h3 class="panel-title" id="pick-title"></h3>
+            <div class="optgroups" id="choices" hidden></div>
+          </div>
+          <div class="section section--run">
+            <p class="err" id="err" role="status"></p>
+            <div class="feedback" id="feedback">
+              <div class="result" id="result" tabindex="-1" role="status" aria-live="polite"></div>
+              <ul class="chips stagger" id="chips"></ul>
+            </div>
+            <div class="actions actions--run">
+              <button class="btn btn--primary" id="run" type="button" data-t="btn.run" aria-keyshortcuts="Control+Enter"></button>
+            </div>
+          </div>
+          <div class="section">
+            <h3 class="panel-title" data-t="help.title"></h3>
+            <div class="note reveal" id="hint-note"><div id="hint-text"></div></div>
+            <div class="note reveal" id="why-note"><div id="why-text"></div></div>
+            <div class="toolrow">
+              <button class="btn" id="hint" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-help"/></svg><span id="hint-label"></span></button>
+              <button class="btn" id="why" type="button" aria-expanded="false" data-t="btn.why"></button>
+              <button class="btn" id="showfix" type="button" data-t="btn.showfix"></button>
+            </div>
+            <div class="toolrow toolrow--small">
+              <button class="btn btn--ghost" id="copy" type="button" data-t="btn.copy"></button>
+              <button class="btn btn--ghost" id="undo" type="button" data-t="btn.undo" disabled></button>
+            </div>
+          </div>
+        </section>
+        <div class="stack">
+          <section class="scene" aria-labelledby="map-title">
+            <div class="scene__head">
+              <h2 class="panel-title" id="map-title" data-t="map.title"></h2>
+              <span class="meter" id="meter"><span id="meter-label"></span><strong id="exposed"></strong></span>
+            </div>
+            <svg class="graph" id="graph" viewBox="0 28 480 224" role="group"></svg>
+            <p class="scene__caption" id="scene-caption" aria-live="polite"></p>
+          </section>
+        </div>
+
+      </div>
+
+      <div class="stack" id="done" hidden>
+        <span class="resolved reveal" id="stamp"></span>
+        <p class="scoreline" id="scoreline"></p>
+        <p class="err" id="rankline"></p>
+        <div class="cols">
+          <section class="panel note reveal" id="lesson" aria-labelledby="ls-title">
+            <h2 class="panel-title" id="ls-title" data-t="lesson.title"></h2>
+            <dl class="lesson" id="lesson-body"></dl>
+          </section>
+          <section class="panel note" id="rw" aria-labelledby="rw-title">
+            <h2 class="panel-title" id="rw-title" data-t="rw.title"></h2>
+            <div id="rw-body"></div>
+          </section>
+        </div>
+        <section class="panel" aria-labelledby="diff-title">
+          <div class="panel__head"><h2 class="panel-title" id="diff-title" data-t="diff.title"></h2></div>
+          <div class="diff" id="diff" role="region" tabindex="0" dir="ltr" data-t-label="diff.region"></div>
+        </section>
+        <div class="actions">
+          <button class="btn" id="share" type="button" data-t="btn.share"></button>
+          <button class="btn btn--ghost" id="to-board" type="button" data-t="nav.board"></button>
+        </div>
+      </div>
+
+      <section class="panel" aria-labelledby="log-title">
+        <div class="panel__head"><h2 class="panel-title" id="log-title" data-t="log.title"></h2></div>
+        <div role="log" data-t-label="log.title"><ol class="log" id="log"></ol></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="view-board" hidden>
+    <div class="stack">
+      <header class="boardhead">
+        <h1 class="board__title" id="board-title" tabindex="-1" data-t="board.title"></h1>
+        <div class="doors" id="doors" role="img"></div>
+        <p class="goal" id="board-progress"></p>
+      </header>
+      <div class="shuffle">
+        <div>
+          <h2 class="panel-title" data-t="board.shuffle"></h2>
+          <p class="intro-line" data-t="board.shuffleHelp"></p>
+        </div>
+        <div class="actions">
+          <button class="btn" id="run-easy" type="button" data-t="board.easy"></button>
+          <button class="btn" id="run-full" type="button" data-t="board.full"></button>
+        </div>
+        <p class="err" id="run-note"></p>
+      </div>
+      <div class="filters" id="filters" role="group" data-t-label="board.filters"></div>
+      <div class="tickets" id="tickets"></div>
+      <section class="thanks" id="board-thanks" aria-labelledby="thanks-title" hidden><h2 id="thanks-title" data-t="thanks.title"></h2><p data-t="thanks.text"></p></section>
+      <p class="empty" id="board-empty" hidden><svg class="door-mini is-locked" viewBox="0 0 16 22" aria-hidden="true"><use href="#i-door-shut"/></svg><span data-t="board.empty"></span></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p class="err" data-t="footer.legal"></p>
+  <p class="err" data-t="footer.practice"></p>
+  <p class="err"><a class="link" id="how-to" href="#/home" data-t="nav.how"></a> <button class="btn btn--text" id="reset-all" type="button" data-t="footer.reset"></button></p>
+  <p class="err" id="storage-note" data-t="err.storage" hidden></p>
+</footer>
+
+<dialog class="dialog" id="welcome-back" aria-labelledby="wb-title">
+  <h2 id="wb-title" data-t="wb.title"></h2>
+  <p id="wb-text"></p>
+  <p id="wb-sure" hidden data-t="wb.sure"></p>
+  <label class="check" id="wb-ask"><input type="checkbox" id="wb-noask"><span data-t="wb.noask"></span></label>
+  <div class="actions" id="wb-main">
+    <button class="btn btn--primary" id="wb-continue" type="button" data-t="wb.continue"></button>
+    <button class="btn" id="wb-restart" type="button" data-t="wb.restart"></button>
+  </div>
+  <div class="actions" id="wb-confirm" hidden>
+    <button class="btn btn--primary" id="wb-yes" type="button" data-t="wb.yes"></button>
+    <button class="btn" id="wb-back" type="button" data-t="wb.back"></button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="coach" id="coach" role="dialog" aria-labelledby="coach-title" hidden>
+  <p class="coach__step" id="coach-step"></p>
+  <h2 class="panel-title" id="coach-title" tabindex="-1" data-t="tour.title"></h2>
+  <p id="coach-text"></p>
+  <div class="actions">
+    <button class="btn" id="coach-back" type="button" data-t="tour.back"></button>
+    <button class="btn btn--primary" id="coach-next" type="button"></button>
+    <button class="btn btn--ghost" id="coach-skip" type="button" data-t="tour.skip"></button>
+  </div>
+</div>
+
+<noscript><p class="banner">This game needs JavaScript to run. / המשחק הזה צריך JavaScript כדי לרוץ.</p></noscript>
+<script type="module" src="src/ui/app.js"></script>
+</body>
+</html>

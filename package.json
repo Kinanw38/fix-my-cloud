@@ -1,0 +1,24 @@
+{
+  "name": "fix-my-cloud",
+  "version": "0.1.0",
+  "description": "Fix real, simplified DevOps incidents in the browser.",
+  "private": true,
+  "type": "module",
+  "author": "Ron Keinan",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "e2e": "playwright test",
+    "serve": "node scripts/serve.mjs",
+    "privacy": "node scripts/privacy-check.mjs",
+    "build": "node scripts/build-site.mjs",
+    "set-username": "node scripts/set-username.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.1"
+  }
+}

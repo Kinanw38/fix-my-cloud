@@ -1,0 +1,218 @@
+/* The game screen: an on-call incident room. The cloud map is the hero,
+   the config opens beside it, and the incident has a status like a real status page. */
+.screen { container-type: inline-size; max-inline-size: 1180px; margin-inline: auto; padding: var(--s-4); display: grid; gap: var(--s-4); }
+
+/* Top bar and incident status track */
+.topbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); padding: var(--s-2) var(--s-4); background: var(--panel); border-block-end: 1px solid var(--line); }
+.topbar .timer { margin-inline-start: auto; }
+.timer__label { color: var(--muted); font: var(--fs-small) / 1 var(--font-ui); }
+.track { display: flex; align-items: center; margin: 0; padding: 0; list-style: none; font-size: var(--fs-small); }
+.stage { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--muted); }
+.stage + .stage::before { content: ""; inline-size: 1.5rem; border-block-start: 1px solid var(--line-strong); margin-inline: var(--s-2); }
+.stage__dot { display: inline-grid; place-items: center; inline-size: 1.25rem; block-size: 1.25rem; border: 1.5px solid var(--line-strong); border-radius: 50%; }
+.stage__dot .icon { inline-size: 0.8rem; block-size: 0.8rem; }
+.stage.is-current { color: var(--text); font-weight: 500; }
+.stage.is-current .stage__dot { border-color: var(--accent); background: var(--accent-bg); }
+.stage.is-done { color: var(--text); }
+.stage.is-done .stage__dot { border-color: var(--safe); background: var(--safe-bg); color: var(--safe); }
+@media (max-width: 640px) { .track { inline-size: 100%; order: 3; } .stage + .stage::before { inline-size: 0.75rem; margin-inline: var(--s-1); } }
+
+/* Alert: a flat strip, not a card with a colored edge. */
+.alert { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); padding: var(--s-3) var(--s-4); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); font-size: 1.125rem; line-height: 1.35; font-weight: 600; }
+.alert__lbl { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--danger); font-size: var(--fs-small); font-weight: 600; }
+.alert__msg { flex: 1 1 18rem; }
+.alert.is-over .alert__lbl { color: var(--safe); }
+.goal { margin: 0; color: var(--muted); }
+.goal strong { color: var(--text); font-weight: 600; }
+
+/* Layout: map is the larger side */
+.cols { display: grid; gap: var(--s-4); }
+@container (min-width: 820px) { .cols { grid-template-columns: 1fr 1.1fr; align-items: start; } }
+.stack { display: grid; gap: var(--s-3); }
+
+/* Scene: the map is an illustration. A night sky, the internet as a globe, a cloud with the
+   server inside, and a door. The door is the whole idea: it is open, then it is locked. */
+.meter { margin-inline-start: auto; display: inline-flex; align-items: center; gap: var(--s-2); font-size: var(--fs-small); color: var(--muted); }
+.map__sub { color: var(--muted); font-size: var(--fs-small); }
+.scene { background: var(--sky); border: 1px solid var(--line); border-radius: var(--radius); overflow: clip; }
+.scene__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); padding: var(--s-3) var(--s-4); }
+.scene__caption { margin: 0; padding: var(--s-2) var(--s-4) var(--s-4); color: var(--danger); font-size: 1rem; font-weight: 600; }
+.scene__caption.is-closed { color: var(--safe); }
+.scene__hint { margin: 0; padding: var(--s-1) var(--s-4) var(--s-3); }
+.scene .graph { display: block; inline-size: 100%; block-size: auto; max-inline-size: none; margin: 0; direction: ltr; }
+.sky { fill: var(--sky); }
+.star { fill: var(--star); }
+.moon-disc { fill: var(--moon); }
+.moon-cut { fill: var(--sky); }
+.sun-disc { fill: var(--sun); }
+.stars, .moon, .sun { transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
+.sun { opacity: 0; transform: translateY(70px); }
+[data-mood="dawn"] .stars { opacity: 0; }
+[data-mood="dawn"] .moon { opacity: 0; transform: translateY(50px); }
+[data-mood="dawn"] .sun { opacity: 1; transform: none; }
+.cloud { fill: var(--cloud); stroke: var(--line-strong); stroke-width: 1.5; }
+.globe-body { fill: var(--cloud); stroke: var(--text); stroke-width: 1.6; }
+.globe-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.rack-unit { fill: var(--panel-2); stroke: var(--line-strong); stroke-width: 1.2; }
+.rack-slot { stroke: var(--muted); stroke-width: 1.2; stroke-linecap: round; }
+.led { fill: var(--danger); }
+.graph[data-state="contained"] .led { fill: var(--safe); }
+.lbl { font: 500 16px var(--font-ui); fill: var(--text); paint-order: stroke; stroke: var(--sky); stroke-width: 4px; stroke-linejoin: round; }
+.lbl--in { stroke: var(--cloud); }
+.lbl-muted { font: 500 14px var(--font-ui); fill: var(--muted); }
+/* Open door, and the light spilling out of it. Locked door replaces it when contained. */
+.door-void { fill: var(--danger-bg); stroke: var(--danger); stroke-width: 2; }
+.door-leaf { fill: var(--danger); opacity: 0.85; }
+.spill { fill: var(--danger); opacity: 0.2; }
+[data-loops="on"] .spill { animation: breathe calc(var(--dur-slow) * 5) var(--ease) infinite alternate; }
+@keyframes breathe { from { opacity: 0.28; } to { opacity: 0.08; } }
+.door-shut { fill: var(--safe-bg); stroke: var(--safe); stroke-width: 2; }
+.door-closed .icon { color: var(--safe); }
+.door-open, .door-closed, .cap-open, .cap-closed, .edge-full, .edge-short { transition: opacity var(--dur-base) var(--ease); }
+.door-closed, .cap-closed, .edge-short { opacity: 0; }
+.graph[data-state="contained"] .door-closed, .graph[data-state="contained"] .cap-closed, .graph[data-state="contained"] .edge-short { opacity: 1; }
+.graph[data-state="contained"] .door-open, .graph[data-state="contained"] .cap-open, .graph[data-state="contained"] .edge-full { opacity: 0; }
+.graph[data-state="contained"] .spill { opacity: 0; animation: none; }
+/* The server is the thing you tap. */
+.pick { cursor: pointer; }
+.pick:focus-visible { outline: none; }
+.pick-ring { fill: none; stroke: var(--accent); stroke-width: 2.5; opacity: 0; }
+.pick:focus-visible .pick-ring { opacity: 1; }
+@media (hover: hover) { .pick:hover .pick-ring { opacity: 0.7; } }
+
+/* Inspector: flat sections separated by hairlines, no cards inside cards */
+.inspector .section { padding: var(--s-4); border-block-start: 1px solid var(--line); display: grid; gap: var(--s-3); }
+.file { display: inline-flex; align-items: center; gap: var(--s-2); font: 500 var(--fs-small) / 1 var(--font-mono); color: var(--text); }
+.file:focus { outline: none; }
+.intro-line { margin: 0; color: var(--muted); font-size: var(--fs-small); }
+.line.is-target::after { opacity: 1; background: var(--accent-bg); }
+.line.is-target .line__n { color: var(--accent); }
+.line__tag { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: var(--s-1); margin-inline-start: auto; padding-inline: var(--s-3); color: var(--accent); font: 500 var(--fs-small) / 1.6 var(--font-ui); white-space: nowrap; }
+.codebox { position: relative; }
+.opts { display: grid; gap: var(--s-2); }
+.opt { display: grid; grid-template-columns: auto 1fr; gap: var(--s-1) var(--s-3); align-items: center; inline-size: 100%; min-block-size: var(--tap); padding: var(--s-2) var(--s-3); background: var(--panel-2); border: 1px solid var(--line-strong); border-radius: var(--radius); text-align: start; cursor: pointer; transition: transform var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.opt:active { transform: scale(0.98); }
+@media (hover: hover) { .opt:hover { border-color: var(--text); } }
+.opt__key { display: inline-grid; place-items: center; inline-size: 1.5rem; block-size: 1.5rem; border: 1px solid var(--line-strong); border-radius: var(--radius-s); font: 500 var(--fs-small) / 1 var(--font-mono); color: var(--muted); }
+.opt[aria-pressed="true"] { background: var(--accent-bg); border-color: var(--accent); }
+.opt[aria-pressed="true"] .opt__key { border-color: var(--accent); color: var(--accent); }
+.opt__why { grid-column: 2; color: var(--muted); font-size: var(--fs-small); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.actions--run .btn--primary { flex: 1 1 100%; min-block-size: 3.25rem; font-size: 1.0625rem; }
+.section--run { display: grid; gap: var(--s-3); }
+.quiet { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2); }
+.btn--text { background: transparent; border-color: transparent; color: var(--muted); min-inline-size: 0; padding-inline: var(--s-2); }
+@media (hover: hover) { .btn--text:hover { color: var(--text); background: transparent; border-color: transparent; } }
+.btn--text[disabled] { border-style: solid; border-color: transparent; }
+.toggle.btn--text[aria-pressed="true"] { background: var(--accent-bg); color: var(--accent); border-color: transparent; }
+
+/* Result, lesson */
+.resolved { display: inline-flex; align-items: center; gap: var(--s-2); justify-self: start; padding: var(--s-2) var(--s-4); border: 1px solid var(--safe); background: var(--safe-bg); color: var(--safe); border-radius: 999px; font-weight: 600; }
+.resolved .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.lesson { display: grid; gap: var(--s-2); margin: 0; }
+.lesson dt { font: 600 var(--fs-small) / 1.3 var(--font-ui); color: var(--muted); }
+.lesson dd { margin: 0 0 var(--s-2); }
+.err { color: var(--muted); font-size: var(--fs-small); margin: 0; }
+
+/* Language switch: content fades out, text swaps, content fades in. */
+.topbar > :not(.seg), .screen { transition: opacity var(--dur-fast) var(--ease); }
+body.is-swapping .topbar > :not(.seg), body.is-swapping .screen { opacity: 0; }
+
+/* Panel headers wrap cleanly, and words never break in the middle. */
+.panel__head { flex-wrap: wrap; row-gap: var(--s-2); }
+.panel__head, .panel__head > * { overflow-wrap: normal; }
+.panel__head .panel-title, .meter, .map__sub { white-space: nowrap; }
+@container (max-width: 560px) {
+  .map__sub { display: none; }
+  .map__body { padding: var(--s-1); }
+}
+
+.line--tap { cursor: pointer; }
+.line--tap:focus-visible { outline-offset: -2px; }
+@media (hover: hover) { .line--tap:hover { background: var(--panel-2); } }
+
+/* Scene motion. Loops run only when html[data-loops="on"]: motion allowed, device able, tab and scene visible.
+   One-off moments (door shutting, the lock ticking) follow the duration tokens, so they are instant when motion is off. */
+.door-leaf, .door-shut, .globe-meridian, .led, .door-closed .icon { transform-box: fill-box; transform-origin: center; }
+.door-leaf, .door-shut { transform-origin: right center; }
+[data-loops="on"] .graph[data-state="breached"] .door-leaf { animation: sway calc(var(--dur-slow) * 6) var(--ease) infinite alternate; }
+@keyframes sway { from { transform: scaleX(1); } to { transform: scaleX(0.7); } }
+.graph[data-state="contained"] .door-shut { animation: shut var(--dur-slow) var(--ease); }
+@keyframes shut { from { transform: scaleX(0.2); opacity: 0; } to { transform: none; opacity: 1; } }
+.graph[data-state="contained"] .door-closed .icon { animation: tick var(--dur-slow) var(--ease); }
+@keyframes tick { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.2); opacity: 1; } 100% { transform: none; opacity: 1; } }
+[data-loops="on"] .globe-meridian { animation: spin calc(var(--dur-slow) * 20) linear infinite; }
+@keyframes spin { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.12); } }
+[data-loops="on"] .graph[data-state="breached"] .led { animation: blink calc(var(--dur-slow) * 4) var(--ease) infinite alternate; }
+[data-loops="on"] .graph[data-state="breached"] .pick circle:nth-of-type(2) { animation-delay: calc(var(--dur-fast) * 3); }
+[data-loops="on"] .graph[data-state="breached"] .pick circle:nth-of-type(3) { animation-delay: calc(var(--dur-fast) * 6); }
+@keyframes blink { from { opacity: 1; } to { opacity: 0.3; } }
+[data-loops="on"]:not([data-mood="dawn"]) .star:nth-child(3n) { animation: twinkle calc(var(--dur-slow) * 9) var(--ease) infinite alternate; }
+[data-loops="on"]:not([data-mood="dawn"]) .star:nth-child(3n + 1) { animation: twinkle calc(var(--dur-slow) * 12) var(--ease) infinite alternate; animation-delay: calc(var(--dur-slow) * 3); }
+@keyframes twinkle { from { opacity: 1; } to { opacity: 0.25; } }
+
+/* Long code lines scroll inside the code pane instead of stretching the whole panel. */
+.inspector .section > *, .codebox, .code, .diff { min-inline-size: 0; max-inline-size: 100%; }
+.line__n { min-inline-size: 3.6ch; white-space: nowrap; }
+
+/* The "gap" shapes: what is wrong (red) and what it becomes once fixed (green). */
+.gap-bad, .gap-good { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.gap-bad { stroke: var(--danger); }
+.gap-good { stroke: var(--safe); }
+.gap-bad-fill { fill: var(--danger); }
+.gap-good-fill { fill: var(--safe); }
+.gap-dash { fill: none; stroke: var(--danger); stroke-width: 2; stroke-dasharray: 4 3; }
+.door-open .icon { color: var(--danger); }
+
+/* The task card: what to do (one sentence), three steps with the current one marked, one line for what to do right now. */
+.task { display: grid; gap: var(--s-2); padding: var(--s-4); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+.task__alert { margin: 0; display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); align-items: center; color: var(--muted); font-size: var(--fs-small); }
+.task__alert .alert__lbl { color: var(--danger); }
+.task__alert.is-over .alert__lbl { color: var(--safe); }
+.task__label { margin: 0; color: var(--muted); font-size: var(--fs-small); font-weight: 600; letter-spacing: 0.04em; }
+.task__goal { margin: 0; font-size: 1.375rem; line-height: 1.3; font-weight: 700; }
+.steps3 { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin: var(--s-1) 0 0; padding: 0; list-style: none; }
+.steps3 li { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--muted); font-size: var(--fs-small); font-weight: 500; }
+.steps3__n { display: inline-grid; place-items: center; inline-size: 1.5rem; block-size: 1.5rem; border: 1px solid var(--line-strong); border-radius: 50%; font: 600 var(--fs-small) / 1 var(--font-ui); }
+.steps3__n .icon { inline-size: 0.875rem; block-size: 0.875rem; }
+.steps3 .is-current { color: var(--text); font-weight: 700; }
+.steps3 .is-current .steps3__n { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.steps3 .is-done .steps3__n { border-color: var(--safe); color: var(--safe); }
+.task__now { margin: var(--s-1) 0 0; padding: var(--s-2) var(--s-3); background: var(--panel-2); border-inline-start: 3px solid var(--accent); border-radius: var(--radius-s); font-size: 1.0625rem; }
+.task__now.is-done { border-inline-start-color: var(--safe); }
+.task__now.is-warn { border-inline-start-color: var(--danger); }
+.feedback { display: grid; gap: var(--s-2); }
+.feedback[hidden] { display: none; }
+
+/* Round, radio-like marker on each fix card, like real quiz screens. */
+.opt__key { border-radius: 50%; }
+.opt[aria-pressed="true"] .opt__key { background: var(--accent); color: var(--on-accent); }
+
+/* Dialog */
+.dialog { max-inline-size: min(26rem, calc(100vw - 2rem)); padding: var(--s-5); color: var(--text); background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--radius); }
+.dialog::backdrop { background: color-mix(in srgb, var(--bg) 80%, transparent); }
+.dialog h2 { margin: 0 0 var(--s-2); font-size: 1.25rem; }
+.dialog p { margin: 0 0 var(--s-3); }
+.check { display: flex; align-items: center; gap: var(--s-2); margin-block: var(--s-3); min-block-size: var(--tap); cursor: pointer; }
+.check input { inline-size: 1.25rem; block-size: 1.25rem; accent-color: var(--accent); }
+.topbar__nav { display: inline-flex; align-items: center; gap: var(--s-1); }
+.topbar__nav[aria-current="page"] { color: var(--text); font-weight: 700; }
+@media (max-width: 30rem) { .task__goal { font-size: 1.1875rem; } }
+
+/* Calm first look: one thing to look at at a time. Red lives in the picture. The strips are neutral. */
+.meter strong { display: inline-flex; align-items: center; gap: var(--s-1); padding: 3px 10px; border-radius: 999px; font-weight: 600; font-size: var(--fs-small); color: var(--text); background: transparent; border: 1px solid var(--line-strong); }
+.meter strong .icon { color: var(--danger); }
+.meter.is-zero strong .icon { color: var(--safe); }
+.scene__caption, .scene__caption.is-closed { color: var(--text); }
+
+/* Soft marks for the next thing to do: a thin, gentle border. It is not the focus ring (that one is thicker). */
+.codebox { border: 1px solid transparent; border-radius: var(--radius); }
+.codebox.is-next { border-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.codebox.is-next .editor { border-color: color-mix(in srgb, var(--accent) 60%, var(--line-strong)); background: var(--accent-bg); }
+.optgroups.is-next .opt { border-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.btn--primary.is-quiet { background: var(--panel-2); color: var(--text); border-color: var(--line-strong); font-weight: 500; }
+
+/* Closing card on the board */
+.thanks { display: grid; gap: var(--s-2); justify-items: start; margin-block-start: var(--s-5); padding: var(--s-4); background: var(--panel); border: 1px solid var(--safe); border-radius: var(--radius); }
+.thanks h2 { margin: 0; font-size: 1.125rem; }
+.thanks p { margin: 0; color: var(--muted); }

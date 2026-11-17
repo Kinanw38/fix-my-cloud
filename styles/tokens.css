@@ -1,0 +1,111 @@
+/* Design tokens. Every color, size and duration in the project comes from here.
+   A light theme later is a token swap under [data-theme="light"], nothing else changes. */
+:root {
+  color-scheme: dark;
+
+  /* Color. Contrast ratios (WCAG) are measured against --bg unless noted. */
+  --bg: #0e1626;
+  --panel: #152036;
+  --panel-2: #1b2a45;
+  --line: #263552;          /* decorative dividers only */
+  --line-strong: #6f84a8;   /* borders of controls (4.3:1 on panel) */
+  --text: #e8eefc;
+  --muted: #98a8c6;
+  --accent: #ffd166;        /* the desk lamp. Focus and primary actions only */
+  --accent-bg: #2b2614;
+  --on-accent: #1a1405;
+  --danger: #ff6b6b;        /* means breached, nothing else */
+  --danger-bg: #331a24;
+  --safe: #6ee7b7;          /* means contained, nothing else */
+  --safe-bg: #0f2f29;
+  /* The scene: night sky now, dawn after the fix */
+  --sky: #0a1020;
+  --star: #cdd7f0;
+  --moon: #f4e9c1;
+  --sun: #f59e0b;
+  --cloud: #1d2c49;
+
+  /* Type */
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-ui: "Rubik Variable", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Hebrew", "Arial Hebrew", sans-serif;
+  --fs-label: 0.6875rem;
+  --fs-small: 0.8125rem;
+  --fs-body: 0.9375rem;
+  --fs-code: 0.8125rem;
+  --fs-edit: 1rem;          /* textarea: at least 16px or iOS zooms on focus */
+  --fs-title: 1.25rem;
+  --fs-display: 1.75rem;
+
+  /* Space, shape */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --radius: 10px;
+  --radius-s: 6px;
+  --tap: 44px;
+  --ring: 2px;
+
+  /* Motion. The only durations and easing allowed anywhere. */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 280ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --stagger-chip: 40ms;
+  --stagger-node: 60ms;
+  --rise: 8px;
+}
+
+/* Reduced motion: every transition becomes an instant state change. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+    --stagger-chip: 0ms;
+    --stagger-node: 0ms;
+    --rise: 0px;
+  }
+}
+
+/* Dawn: the mood after a successful fix. The interface stays DARK. Only the sky changes, and the
+   accent warms up. Every pair is checked for WCAG AA (text 4.5:1, control borders and shapes 3:1). */
+[data-mood="dawn"] {
+  --bg: #0f1f2b;
+  --panel: #162b3a;
+  --panel-2: #1d3748;
+  --line: #2b4557;
+  --line-strong: #8aa5b9;
+  --text: #eaf3f7;
+  --muted: #a5bac8;
+  --accent: #ffc16b;
+  --accent-bg: #33281a;
+  --on-accent: #1d1304;
+  --danger: #ff8a8a;
+  --danger-bg: #3a1f26;
+  --safe: #7cf0c3;
+  --safe-bg: #10372f;
+  --sky: #21405a;
+  --cloud: #27465e;
+}
+
+/* A light dawn, ready if the maintainer ever wants it: set data-mood="dawn-light" in setMood().
+   Not used today. Also AA-checked. */
+[data-mood="dawn-light"] {
+  color-scheme: light;
+  --bg: #fbf3e4; --panel: #fffaf0; --panel-2: #f4ead3; --line: #e6d9bb; --line-strong: #857654;
+  --text: #1c2438; --muted: #566079; --accent: #1d3a8a; --accent-bg: #e2e8f8; --on-accent: #fffaf0;
+  --danger: #b42318; --danger-bg: #fde7e4; --safe: #166534; --safe-bg: #dcf3e2; --sky: #fde9cf; --cloud: #ffffff;
+}
+
+/* Motion off: the user asked for less motion, or the device is weak. Same effect as reduced motion. */
+[data-motion="off"] {
+  --dur-fast: 0ms;
+  --dur-base: 0ms;
+  --dur-slow: 0ms;
+  --stagger-chip: 0ms;
+  --stagger-node: 0ms;
+  --rise: 0px;
+}

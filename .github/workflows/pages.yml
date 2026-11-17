@@ -1,0 +1,76 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# The default token can only read. Jobs ask for more only where they need it.
+permissions:
+  contents: read
+
+# One deploy at a time. A running deploy is never cancelled halfway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # A broken build never goes live: tests run BEFORE the deploy job can start.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Actions are pinned to major tags. SHA pinning is stricter.
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run privacy
+      - run: npx playwright install --with-deps chromium firefox
+      - run: npx playwright test --project=chromium --project=firefox
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  # After the deploy: open the live URL and fail the workflow if it is not the game.
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Check the live site
+        env:
+          URL: ${{ needs.deploy.outputs.page_url }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o page.html -w '%{http_code}' "$URL")
+            if [ "$code" = "200" ] && grep -q '<title>Fix My Cloud</title>' page.html; then
+              echo "Live site is up: $URL"; exit 0
+            fi
+            echo "Attempt $i: HTTP $code, waiting..."; sleep 10
+          done
+          echo "The live site did not respond with the game."; exit 1

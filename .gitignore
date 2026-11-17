@@ -1,0 +1,13 @@
+.idea/
+.vscode/
+.env
+*.tfstate
+*.tfstate.*
+node_modules/
+internal/
+test-results/
+playwright-report/
+playwright/.cache/
+screenshots/
+*.trace.zip
+_site/
