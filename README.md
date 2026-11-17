@@ -100,6 +100,7 @@ account. See [NOTICE.md](NOTICE.md).
 ## License
 
 [PolyForm Noncommercial 1.0.0](LICENSE): personal study, hobby use, research and teaching are allowed. Commercial use is not.
+This is a source-available license, not an open source one: the code is open to read and learn from.
 The Rubik font keeps its own license (SIL OFL 1.1, `assets/fonts/OFL-Rubik.txt`).
 
 Built by Ron Keinan.

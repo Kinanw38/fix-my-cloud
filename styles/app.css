@@ -53,8 +53,7 @@
 .brand { display: inline-flex; align-items: center; gap: var(--s-2); min-block-size: var(--tap); color: var(--text); text-decoration: none; font: 700 1rem / 1 var(--font-ui); letter-spacing: 0.01em; }
 .brand__mark { inline-size: 1.75rem; block-size: 1.75rem; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .topbar__nav { margin-inline-start: auto; }
-.seg { position: relative; display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line-strong); border-radius: 999px; --dir: 1; --shift: 0px; }
-html[dir="rtl"] .seg { --dir: -1; }
+.seg { direction: ltr; position: relative; display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line-strong); border-radius: 999px; --dir: 1; --shift: 0px; }
 .seg[data-active="he"] { --shift: calc(var(--tap) + 2px); }
 /* The yellow pill slides to the chosen language. */
 .seg::before { content: ""; position: absolute; inset-block: 2px; inset-inline-start: 2px; inline-size: var(--tap); border-radius: 999px; background: var(--accent); transform: translateX(calc(var(--dir) * var(--shift))); transition: transform var(--dur-slow) var(--ease); }
@@ -159,3 +158,11 @@ html[dir="rtl"] .seg { --dir: -1; }
 /* The brand mark: a door that swings once when you hover it, and gently when motion is allowed. */
 @media (hover: hover) { .brand:hover .brand__mark { transform: rotate(-8deg) scale(1.06); } }
 .brand__mark { transition: transform var(--dur-base) var(--ease); }
+
+/* The language switch never moves: it stays on the right, in both languages, and only its yellow pill slides.
+   Everything else in the bar flips with the language as usual. */
+.topbar { direction: ltr; }
+.topbar__main { flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-3); min-inline-size: 0; }
+html[dir="rtl"] .topbar__main { direction: rtl; }
+.footer__reset { margin-block: var(--s-5) 0; }
+.topbar .seg { margin-inline-start: auto; }
