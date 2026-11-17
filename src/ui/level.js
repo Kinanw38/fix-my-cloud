@@ -80,7 +80,8 @@ function solve() {
 
 function hint() {
   start(); if (S.tier >= 3) return;
-  S.tier++; if (S.tier >= (practice() ? 1 : 2)) S.lineHint = true; // practice hints are free, so the first one already points log('log.hint', { n: S.tier });
+  S.tier++; log('log.hint', { n: S.tier });
+  if (S.tier >= (practice() ? 1 : 2)) S.lineHint = true; // practice hints are free, so the first one already points
   render();
 }
 

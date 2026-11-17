@@ -125,7 +125,7 @@ test('every level opens with a briefing: what happened, what is wrong, your goal
   await boot(page, { hash: '/level/inc-0002-key-in-the-repo', brief: true });
   await expect(page.locator('#brief')).toBeVisible();
   await expect(page.locator('#level-body')).toBeHidden();
-  await expect(page.locator('#brief-story li')).toHaveCount(3);
+  await expect(page.locator('#brief-story li.is-in')).toHaveCount(3); // told one line at a time: wait for all of them
   await expect(page.locator('#brief-what')).not.toBeEmpty();
   expect(await axeSerious(page)).toEqual([]);
   await page.click('#brief-go');

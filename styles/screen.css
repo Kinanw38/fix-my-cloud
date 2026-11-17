@@ -45,7 +45,7 @@
 .moon-disc { fill: var(--moon); }
 .moon-cut { fill: var(--sky); }
 .sun-disc { fill: var(--sun); }
-.stars, .moon, .sun { transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
+.stars, .moon, .sun { transition: opacity var(--dur-mood) var(--ease), transform var(--dur-mood) var(--ease); }
 .sun { opacity: 0; transform: translateY(70px); }
 [data-mood="dawn"] .stars { opacity: 0; }
 [data-mood="dawn"] .moon { opacity: 0; transform: translateY(50px); }
@@ -115,7 +115,7 @@
 .err { color: var(--muted); font-size: var(--fs-small); margin: 0; }
 
 /* Language switch: content fades out, text swaps, content fades in. */
-.topbar > :not(.seg), .screen { transition: opacity var(--dur-fast) var(--ease); }
+.topbar > :not(.seg), .screen { transition: opacity var(--dur-base) var(--ease); }
 body.is-swapping .topbar > :not(.seg), body.is-swapping .screen { opacity: 0; }
 
 /* Panel headers wrap cleanly, and words never break in the middle. */
@@ -216,3 +216,20 @@ body.is-swapping .topbar > :not(.seg), body.is-swapping .screen { opacity: 0; }
 .thanks { display: grid; gap: var(--s-2); justify-items: start; margin-block-start: var(--s-5); padding: var(--s-4); background: var(--panel); border: 1px solid var(--safe); border-radius: var(--radius); }
 .thanks h2 { margin: 0; font-size: 1.125rem; }
 .thanks p { margin: 0; color: var(--muted); }
+
+/* Night turning into dawn: colours change slowly, the page never blinks. */
+html.is-mood *:not(.stars):not(.moon):not(.sun) { transition: background-color var(--dur-mood) var(--ease), border-color var(--dur-mood) var(--ease), color var(--dur-mood) var(--ease), fill var(--dur-mood) var(--ease), stroke var(--dur-mood) var(--ease); }
+
+/* SVG parts scale around their own centre. Without this they appear to fly in from the corner. */
+.door-shut, .globe-meridian, .led, .pick circle, .door-closed .icon { transform-box: fill-box; transform-origin: center; }
+.door-leaf { transform-box: fill-box; transform-origin: left center; }
+.ticket .door-shut, .ticket .door-closed .icon, .ticket .door-leaf, .ticket .globe-meridian, .ticket .led { animation: none !important; }
+
+/* The message at the bottom slides in and fades out. */
+.toast { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--dur-base) var(--ease), transform var(--dur-base) var(--ease); }
+.toast.is-in { opacity: 1; transform: none; }
+.toast__x { display: inline-grid; place-items: center; flex: none; inline-size: var(--tap); block-size: var(--tap); margin-inline: calc(var(--s-2) * -1) calc(var(--s-3) * -1); background: transparent; border: 0; color: var(--muted); cursor: pointer; border-radius: 50%; }
+.toast__x .icon { inline-size: 1.25rem; block-size: 1.25rem; }
+.toast > span { flex: 1; }
+.reset-btn { color: var(--accent); border-color: var(--accent); min-block-size: 2.25rem; padding-block: 0; font-size: var(--fs-small); }
+.topbar .reset-btn { min-block-size: 2rem; }

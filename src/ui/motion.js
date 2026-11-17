@@ -30,10 +30,15 @@ export function initMotion(sceneEl) {
 export function swap(fn) {
   if (motionOff()) { fn(); return; }
   document.body.classList.add('is-swapping');
-  setTimeout(() => { fn(); document.body.classList.remove('is-swapping'); }, 120); // = --dur-fast
+  setTimeout(() => { fn(); document.body.classList.remove('is-swapping'); }, 200); // = --dur-base
 }
 
+// Night to dawn: nothing disappears. For a moment every colour is allowed to change slowly (see .is-mood in screen.css).
+let moodTimer;
 export function setMood(m) {
   if ((root.dataset.mood ?? 'night') === m) return;
-  swap(() => { root.dataset.mood = m; });
+  if (motionOff()) { root.dataset.mood = m; return; }
+  root.classList.add('is-mood');
+  requestAnimationFrame(() => { root.dataset.mood = m; });
+  clearTimeout(moodTimer); moodTimer = setTimeout(() => root.classList.remove('is-mood'), 1000); // a little more than --dur-mood
 }

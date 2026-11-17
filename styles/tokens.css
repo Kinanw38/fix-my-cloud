@@ -52,6 +52,7 @@
   --dur-fast: 120ms;
   --dur-base: 200ms;
   --dur-slow: 280ms;
+  --dur-mood: 900ms; /* night turning into dawn */
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --stagger-chip: 40ms;
   --stagger-node: 60ms;
@@ -64,6 +65,7 @@
     --dur-fast: 0ms;
     --dur-base: 0ms;
     --dur-slow: 0ms;
+    --dur-mood: 0ms;
     --stagger-chip: 0ms;
     --stagger-node: 0ms;
     --rise: 0px;
@@ -105,6 +107,7 @@
   --dur-fast: 0ms;
   --dur-base: 0ms;
   --dur-slow: 0ms;
+  --dur-mood: 0ms;
   --stagger-chip: 0ms;
   --stagger-node: 0ms;
   --rise: 0px;

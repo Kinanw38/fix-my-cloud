@@ -53,10 +53,14 @@
 .brand { display: inline-flex; align-items: center; gap: var(--s-2); min-block-size: var(--tap); color: var(--text); text-decoration: none; font: 700 1rem / 1 var(--font-ui); letter-spacing: 0.01em; }
 .brand__mark { inline-size: 1.75rem; block-size: 1.75rem; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .topbar__nav { margin-inline-start: auto; }
-.seg { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line-strong); border-radius: 999px; }
-.seg button { min-block-size: var(--tap); min-inline-size: var(--tap); border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: 500 var(--fs-small) / 1 var(--font-ui); cursor: pointer; transition: transform var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease); }
+.seg { position: relative; display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line-strong); border-radius: 999px; --dir: 1; --shift: 0px; }
+html[dir="rtl"] .seg { --dir: -1; }
+.seg[data-active="he"] { --shift: calc(var(--tap) + 2px); }
+/* The yellow pill slides to the chosen language. */
+.seg::before { content: ""; position: absolute; inset-block: 2px; inset-inline-start: 2px; inline-size: var(--tap); border-radius: 999px; background: var(--accent); transform: translateX(calc(var(--dir) * var(--shift))); transition: transform var(--dur-slow) var(--ease); }
+.seg button { position: relative; z-index: 1; min-block-size: var(--tap); min-inline-size: var(--tap); border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: 500 var(--fs-small) / 1 var(--font-ui); cursor: pointer; transition: transform var(--dur-fast) var(--ease), color var(--dur-slow) var(--ease); }
 .seg button:active { transform: scale(0.98); }
-.seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+.seg button[aria-pressed="true"] { color: var(--on-accent); font-weight: 600; }
 @media (hover: hover) { .seg button:hover:not([aria-pressed="true"]) { color: var(--text); } }
 
 /* Level header: what this is, where you are, how long it has been */

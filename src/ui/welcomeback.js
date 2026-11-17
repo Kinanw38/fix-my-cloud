@@ -9,6 +9,7 @@ let asked = false;
 const dlg = () => $('#welcome-back');
 
 function show(confirm) {
+  $('#wb-title').textContent = t(confirm ? 'wb.resetTitle' : 'wb.title');
   $('#wb-main').hidden = confirm; $('#wb-confirm').hidden = !confirm;
   $('#wb-sure').hidden = !confirm; $('#wb-text').hidden = confirm; $('#wb-ask').hidden = confirm;
 }
@@ -36,5 +37,7 @@ export function initWelcomeBack() {
   $('#wb-yes').addEventListener('click', restart);
   dlg().addEventListener('cancel', () => { if ($('#wb-noask').checked) set('noask', true); }); // Esc = continue
   // The footer link opens it straight on the "are you sure" question.
-  $('#reset-all').addEventListener('click', () => { $('#wb-noask').checked = false; show(true); dlg().showModal(); $('#wb-yes').focus(); });
+  for (const id of ['#reset-all', '#nav-reset']) {
+    $(id).addEventListener('click', () => { $('#wb-noask').checked = false; show(true); dlg().showModal(); $('#wb-yes').focus(); });
+  }
 }

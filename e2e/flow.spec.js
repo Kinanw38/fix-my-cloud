@@ -85,3 +85,37 @@ test('closing card with an optional star link once every incident is solved', as
   await boot(page, { hash: '/board', solved: Object.keys(levels) });
   await expect(page.locator('#board-thanks a')).toHaveAttribute('rel', /noopener/);
 });
+
+test('top-bar reset: asks first, then clears everything and opens like a first visit', async ({ page }) => {
+  await boot(page, { hash: '/level/p2-pin-the-version', solved: ['p1-flip-the-switch'] });
+  await page.click('#nav-reset');
+  await expect(page.locator('#wb-sure')).toContainText('everything');
+  await page.click('#wb-yes');
+  await expect(page.locator('#home-title')).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('fmc.solved'))).toBe('[]'); // the test helper re-seeds the other keys on every load
+});
+
+test('the message at the bottom has an X, and the X closes it', async ({ page }) => {
+  await boot(page, { hash: '/level/p1-flip-the-switch' });
+  await page.click('#startover');
+  await expect(page.locator('#toast')).toBeVisible();
+  await expect(page.locator('#toast')).toHaveClass(/is-in/);
+  await page.click('.toast__x');
+  await expect(page.locator('#toast')).toBeHidden();
+});
+
+test('solving moves night to dawn without hiding the page', async ({ page }) => {
+  await boot(page, { hash: '/level/p1-flip-the-switch' });
+  await solveByEdit(page, levels['p1-flip-the-switch']);
+  await expect(page.locator('html')).toHaveAttribute('data-mood', 'dawn');
+  await expect(page.locator('body')).not.toHaveClass(/is-swapping/);
+  await expect(page.locator('#editor')).toBeVisible(); // what you typed is still there
+});
+
+test('the language switch has a sliding pill and the page language follows', async ({ page }) => {
+  await boot(page, { hash: '/board' });
+  await expect(page.locator('.seg')).toHaveAttribute('data-active', 'en');
+  await page.click('[data-lang="he"]');
+  await expect(page.locator('.seg')).toHaveAttribute('data-active', 'he');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+});
