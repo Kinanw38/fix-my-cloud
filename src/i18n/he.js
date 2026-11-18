@@ -59,6 +59,7 @@ export default {
   "toast.close": "סגירה",
   "nav.reset": "איפוס",
   "wb.resetTitle": "איפוס התקדמות",
+  "cue.tap": "להקיש על השורה הבעייתית",
   "app.title": "Fix My Cloud",
   "app.pitch": "אירועים אמיתיים. בגרסה פשוטה. אפשר לתקן אותם לפני שהם מתפשטים?",
   "alert.label": "התראה",

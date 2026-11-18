@@ -59,6 +59,7 @@ export default {
   "toast.close": "Close",
   "nav.reset": "Reset",
   "wb.resetTitle": "Reset progress",
+  "cue.tap": "Tap the broken line",
   "app.title": "Fix My Cloud",
   "app.pitch": "Real incidents. Simplified. Can you fix them before they spread?",
   "alert.label": "Alert",

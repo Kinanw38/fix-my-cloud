@@ -1,10 +1,19 @@
 // The evidence pane: numbered code lines, the problem lines, and the Tap-mode fix options.
 // "Problem lines" come from the level's own check, so every level works the same way.
-import { $, el, htmlIcon } from './dom.js';
+import { $, el, htmlIcon, svg } from './dom.js';
 import { t, tx } from './i18n.js';
 import { S, app } from './state.js';
 
 export const problemLines = () => new Set(app.level.check(S.code).failures.map((f) => f.line).filter(Boolean));
+
+// A curly brace across the first four lines, with the label at its tip: the cue is about the whole file, not one line.
+function cueBrace() {
+  const box = el('span', 'cue');
+  const s = svg('svg', { class: 'cue__brace', viewBox: '0 0 14 100', preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false' });
+  s.appendChild(svg('path', { d: 'M1 3 Q7 3 7 12 V38 Q7 50 13 50 Q7 50 7 62 V88 Q7 97 1 97' }));
+  box.append(s, el('span', 'cue__label', t('cue.tap')));
+  return box;
+}
 
 export function renderCode(h) {
   const lines = S.code.split('\n');
@@ -12,8 +21,9 @@ export function renderCode(h) {
   const bad = show ? problemLines() : new Set();
   const failing = new Set(S.failures.map((f) => f.line));
   const tappable = !S.solved && !S.editing && !S.lineChosen;
+  const cue = tappable && !S.lineHint && app.level.id.startsWith('p1-'); // only the very first task teaches where to tap
   let tagged = false;
-  $('#code').replaceChildren(...lines.map((text, i) => {
+  $('#code').replaceChildren(...(cue ? [el('div', 'cue__caption', t('cue.tap'))] : []), ...lines.map((text, i) => {
     const marked = bad.has(i + 1);
     const row = el('div', 'line' + (marked ? ' is-target' : '') + (failing.has(i + 1) ? ' is-failing' : '') + (i === S.applied ? ' is-applied' : ''));
     if (tappable) {
@@ -22,6 +32,10 @@ export function renderCode(h) {
       row.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); h.tapLine(i); } });
     }
     row.append(el('span', 'line__n', String(i + 1)), el('span', 'line__t', text || ' '));
+    if (cue && i < 4) { // a soft wave over the first lines, with a label at the end of the first one. It does not point at the answer.
+      row.classList.add('is-cue'); row.dataset.cue = String(i);
+      if (i === 0) row.appendChild(cueBrace());
+    }
     if (marked && !tagged && S.lineHint) {
       tagged = true; // one tag is enough
       const tag = el('span', 'line__tag'); tag.append(htmlIcon('i-arrow', 'icon--left'), t(S.lineChosen ? 'code.change' : 'code.tap')); row.appendChild(tag);

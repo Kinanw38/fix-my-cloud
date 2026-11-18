@@ -32,7 +32,7 @@
 .glyph-dot { fill: var(--muted); }
 .glyph-teeth { stroke: var(--text); stroke-width: 3; }
 .diff.is-in .diff__line:nth-child(n + 7) { transition-delay: calc(var(--stagger-chip) * 5); }
-.footer { max-inline-size: 1180px; margin-inline: auto; padding: var(--s-4); display: grid; gap: var(--s-2); }
+.footer { inline-size: 100%; margin-block-start: auto; max-inline-size: 1180px; margin-inline: auto; padding: var(--s-4); display: grid; gap: var(--s-2); }
 .footer p { margin: 0; }
 
 /* Board */
@@ -54,10 +54,11 @@
 .brand__mark { inline-size: 1.75rem; block-size: 1.75rem; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .topbar__nav { margin-inline-start: auto; }
 .seg { direction: ltr; position: relative; display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line-strong); border-radius: 999px; --dir: 1; --shift: 0px; }
-.seg[data-active="he"] { --shift: calc(var(--tap) + 2px); }
+.seg { --seg-w: var(--tap); }
+.seg[data-active="he"] { --shift: calc(var(--seg-w) + 2px); }
 /* The yellow pill slides to the chosen language. */
-.seg::before { content: ""; position: absolute; inset-block: 2px; inset-inline-start: 2px; inline-size: var(--tap); border-radius: 999px; background: var(--accent); transform: translateX(calc(var(--dir) * var(--shift))); transition: transform var(--dur-slow) var(--ease); }
-.seg button { position: relative; z-index: 1; min-block-size: var(--tap); min-inline-size: var(--tap); border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: 500 var(--fs-small) / 1 var(--font-ui); cursor: pointer; transition: transform var(--dur-fast) var(--ease), color var(--dur-slow) var(--ease); }
+.seg::before { content: ""; position: absolute; inset-block: 2px; inset-inline-start: 2px; inline-size: var(--seg-w); border-radius: 999px; background: var(--accent); transform: translateX(calc(var(--dir) * var(--shift))); transition: transform var(--dur-slow) var(--ease); }
+.seg button { position: relative; z-index: 1; min-block-size: calc(var(--seg-w) - 0px); min-inline-size: var(--seg-w); border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: 500 var(--fs-small) / 1 var(--font-ui); cursor: pointer; transition: transform var(--dur-fast) var(--ease), color var(--dur-slow) var(--ease); }
 .seg button:active { transform: scale(0.98); }
 .seg button[aria-pressed="true"] { color: var(--on-accent); font-weight: 600; }
 @media (hover: hover) { .seg button:hover:not([aria-pressed="true"]) { color: var(--text); } }
@@ -164,14 +165,14 @@
 .topbar { direction: ltr; }
 .topbar__main { flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-3); min-inline-size: 0; }
 html[dir="rtl"] .topbar__main { direction: rtl; }
-.footer__reset { margin-block: var(--s-5) 0; }
+.footer__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-5); margin: var(--s-2) 0 0; }
 .topbar .seg { margin-inline-start: auto; }
 
 /* Opening scene: shown at once on every visit, then it fades into the game. A sun rises behind the cloud, a line fills. */
-.splash { position: fixed; inset: 0; z-index: 100; display: grid; place-content: center; justify-items: center; gap: var(--s-4); background: var(--bg); pointer-events: none; transition: opacity var(--dur-intro) var(--ease), transform var(--dur-intro) var(--ease); /* if the script never finishes, it still leaves after a while */ animation: splash-failsafe 0s var(--dur-failsafe) forwards; }
+.splash { position: fixed; inset: 0; z-index: 100; display: grid; place-content: center; justify-items: center; gap: var(--s-4); background: var(--bg); pointer-events: none; transition: opacity calc(var(--dur-intro) * 1.5) var(--ease), transform calc(var(--dur-intro) * 1.5) var(--ease); /* if the script never finishes, it still leaves after a while */ animation: splash-failsafe 0s var(--dur-failsafe) forwards; }
 .splash.is-done { opacity: 0; transform: scale(1.03); }
 .splash__art { position: relative; display: grid; place-items: center; inline-size: 7rem; block-size: 7rem; }
-.splash__sun { position: absolute; inline-size: 6rem; block-size: 6rem; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line-strong); opacity: 0; transform: translateY(1.75rem); animation: splash-sun calc(var(--dur-intro) * 4) var(--ease) calc(var(--dur-intro) * 0.5) forwards; }
+.splash__sun { position: absolute; inline-size: 6rem; block-size: 6rem; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line-strong); opacity: 0; transform: scale(0.85); animation: splash-sun calc(var(--dur-intro) * 3) var(--ease) forwards; }
 .splash__mark { position: relative; inline-size: 4.5rem; block-size: 4.5rem; opacity: 0; transform: translateY(var(--rise)); animation: splash-in calc(var(--dur-intro) * 2) var(--ease) forwards; }
 .splash__name { margin: 0; font: 700 1.25rem / 1 var(--font-ui); letter-spacing: 0.02em; color: var(--text); opacity: 0; transform: translateY(var(--rise)); animation: splash-in calc(var(--dur-intro) * 2) var(--ease) calc(var(--dur-intro) * 1) forwards; }
 .splash__bar { inline-size: 7rem; block-size: 3px; border-radius: 3px; background: var(--accent); opacity: 0.9; transform: scaleX(0); transform-origin: left center; animation: splash-bar calc(var(--dur-intro) * 4) var(--ease) forwards; }
@@ -179,5 +180,55 @@ html[dir="rtl"] .topbar__main { direction: rtl; }
 @keyframes splash-sun { to { opacity: 1; transform: none; } }
 @keyframes splash-bar { to { transform: scaleX(1); } }
 @keyframes splash-failsafe { to { opacity: 0; visibility: hidden; } }
-[data-loops="on"] .splash:not(.is-done) .splash__mark { animation: splash-in calc(var(--dur-intro) * 2) var(--ease) forwards, splash-float calc(var(--dur-intro) * 8) var(--ease) calc(var(--dur-intro) * 2) infinite alternate; }
+[data-loops="on"] .splash__art { animation: splash-float calc(var(--dur-intro) * 8) var(--ease) calc(var(--dur-intro) * 2) infinite alternate; }
 @keyframes splash-float { from { transform: none; } to { transform: translateY(-0.3rem); } }
+
+/* Top-bar buttons: quiet pills. The page you are on is marked. Hover lifts a little. */
+.navpill { display: inline-flex; align-items: center; gap: var(--s-2); min-block-size: 2.25rem; padding: 0 var(--s-3); border: 1px solid transparent; border-radius: 999px; background: transparent; color: var(--muted); font: 500 var(--fs-small) / 1 var(--font-ui); text-decoration: none; cursor: pointer; transition: transform var(--dur-fast) var(--ease), background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease); }
+.navpill .icon { inline-size: 1rem; block-size: 1rem; }
+.navpill[aria-current="page"] { color: var(--text); background: var(--panel-2); border-color: var(--line-strong); }
+.navpill--reset { border-color: var(--line-strong); }
+.navpill:active { transform: scale(0.97); }
+@media (hover: hover) {
+  .navpill:hover { color: var(--text); background: var(--panel-2); transform: translateY(-1px); }
+  .navpill--reset:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-bg); }
+  .reset-btn:hover { transform: translateY(-1px); }
+  .brand:hover .brand__name { color: var(--accent); }
+  .ticket:hover { transform: translateY(-2px); }
+  .btn:not([disabled]):hover, .chip:hover { transform: translateY(-1px); }
+  .modeswitch button:hover:not([aria-pressed="true"]), .opt:hover { transform: translateY(-1px); }
+}
+.brand__name { transition: color var(--dur-base) var(--ease); }
+.ticket { transition: transform var(--dur-base) var(--ease), background-color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease); }
+.topbar .navpill { min-block-size: 2.25rem; }
+
+/* Reset button: a small card with an icon that spins back when you hover it. */
+.reset-btn { display: inline-flex; align-items: center; gap: var(--s-2); border-radius: 999px; padding-inline: var(--s-4); background: var(--accent-bg); }
+.reset-btn .icon, .navpill--reset .icon { transition: transform calc(var(--dur-slow) * 2) var(--ease); }
+@media (hover: hover) {
+  .reset-btn:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .reset-btn:hover .icon, .navpill--reset:hover .icon { transform: rotate(-360deg); }
+}
+
+/* Phones: two compact rows. Row 1: logo (always at the left edge) and the language switch (always at the right edge).
+   Row 2: three equal buttons, in reading order for the language. */
+@media (max-width: 560px) {
+  .topbar { position: relative; padding: var(--s-2) var(--s-3) var(--s-3); gap: 0; }
+  html[dir="rtl"] .topbar__main, .topbar__main { direction: ltr; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-3) var(--s-2); inline-size: 100%; }
+  .topbar__main .brand { grid-column: 1 / 3; min-block-size: 2.75rem; }
+  .topbar__main .navpill { grid-row: 2; justify-content: center; border-color: var(--line-strong); min-block-size: 2.25rem; padding-inline: var(--s-2); font-size: var(--fs-small); }
+  html[dir="rtl"] .navpill { direction: rtl; }
+  html[dir="rtl"] #nav-home { grid-column: 3; }
+  html[dir="rtl"] #nav-board { grid-column: 2; }
+  html[dir="rtl"] #nav-reset { grid-column: 1; }
+  .topbar__nav { margin-inline-start: 0; }
+  .topbar .seg { --seg-w: 2.25rem; direction: ltr; position: absolute; inset-block-start: var(--s-2); inset-inline-end: var(--s-3); margin: 0; }
+}
+
+/* Reset buttons: icon and text share one centre line. */
+.navpill, .reset-btn { line-height: 1; padding-block: 0 2px; }
+.navpill > span, .reset-btn > span { display: block; }
+.navpill .icon, .reset-btn .icon { flex: none; }
+
+/* On a phone there is no hover, so pressing the reset button spins its icon too. */
+.reset-btn:active .icon, .navpill--reset:active .icon { transform: rotate(-360deg); }

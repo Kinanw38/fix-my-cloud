@@ -4,7 +4,7 @@
 //   #/level/<id>  open a level      #/board  the incident board      #/run/<easy|full>/<seed>  a shuffle run
 import { $ } from './dom.js';
 import { initLang, setLang, t, tx } from './i18n.js';
-import { initMotion, swap, motionOff } from './motion.js';
+import { initMotion, swap, motionOff, setMood } from './motion.js';
 import { app, S } from './state.js';
 import { get, set, solvedIds, storageOk } from './store.js';
 import { manifest } from '../levels/manifest.js';
@@ -38,6 +38,7 @@ const loadAll = () => Promise.all(manifest.map((m) => loadLevel(m.id)));
 /* ---------- views ---------- */
 function show(view) {
   document.body.dataset.view = view;
+  if (view !== 'level') setMood('night'); // a solved level must not leave the home page and the board in dawn colours
   if (view !== 'home') stopDemo();
   $('#view-home').hidden = view !== 'home'; $('#view-level').hidden = view !== 'level'; $('#view-board').hidden = view !== 'board';
   $('#nav-board').setAttribute('aria-current', view === 'board' ? 'page' : 'false'); $('#nav-home').setAttribute('aria-current', view === 'home' ? 'page' : 'false');
@@ -122,7 +123,7 @@ function leaveSplash() {
   const wait = navigator.webdriver ? 0 : Math.max(0, 1100 - performance.now()); // automated tests skip the minimum
   return new Promise((done) => setTimeout(() => {
     splash?.classList.add('is-done');
-    setTimeout(() => { splash?.remove(); done(); }, motionOff() ? 0 : 450); // = --dur-intro plus a little
+    setTimeout(() => { splash?.remove(); done(); }, motionOff() ? 0 : 700); // = --dur-intro x 1.5 plus a little
   }, wait));
 }
 route().finally(async () => {

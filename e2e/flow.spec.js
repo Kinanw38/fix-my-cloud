@@ -1,6 +1,6 @@
 // The flows around the game: Home, refresh, "welcome back", Check -> Next. One consistent story.
 import { test, expect } from '@playwright/test';
-import { boot, levels, solveByEdit, ensureEdit } from './helpers.js';
+import { boot, levels, solveByEdit, ensureEdit, ensureTap } from './helpers.js';
 
 test('Home is in the top bar and brings back the opening page, then Start continues', async ({ page }) => {
   await boot(page, { hash: '/level/p2-pin-the-version' });
@@ -118,4 +118,33 @@ test('the language switch has a sliding pill and the page language follows', asy
   await page.click('[data-lang="he"]');
   await expect(page.locator('.seg')).toHaveAttribute('data-active', 'he');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+});
+
+test('the cue over the code shows only in the first task, in pick mode, before a line is chosen', async ({ page }) => {
+  await boot(page, { hash: '/level/p1-flip-the-switch' });
+  await ensureTap(page);
+  await expect(page.locator('.cue')).toHaveCount(1);
+  await expect(page.locator('.line.is-cue')).toHaveCount(4);
+  await page.locator('.line--tap').nth(2).click(); // tapping still works under the brace
+  await expect(page.locator('.cue')).toHaveCount(0);
+  await boot(page, { hash: '/level/inc-0001-open-to-the-world' });
+  await ensureTap(page);
+  await expect(page.locator('.cue')).toHaveCount(0);
+});
+
+test('the footer stays at the bottom, even on a short page', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 1000 });
+  await boot(page, { hash: '/level/inc-0001-open-to-the-world', brief: true });
+  const gap = await page.evaluate(() => { const f = document.querySelector('footer').getBoundingClientRect(); return Math.round(innerHeight - f.bottom); });
+  expect(gap).toBeLessThanOrEqual(2);
+});
+
+test('after solving a level, the home page and the board go back to night', async ({ page }) => {
+  await boot(page, { hash: '/level/p1-flip-the-switch' });
+  await solveByEdit(page, levels['p1-flip-the-switch']);
+  await expect(page.locator('html')).toHaveAttribute('data-mood', 'dawn');
+  await page.click('#nav-home');
+  await expect(page.locator('html')).toHaveAttribute('data-mood', 'night');
+  await page.click('#nav-board');
+  await expect(page.locator('html')).toHaveAttribute('data-mood', 'night');
 });

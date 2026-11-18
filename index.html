@@ -40,6 +40,7 @@
   <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.7 9.6a2.4 2.4 0 1 1 3.6 2c-.9.6-1.3 1.1-1.3 2M12 16.8v.01"/></symbol>
   <symbol id="i-brand" viewBox="0 0 32 32"><path d="M9 23h14a5 5 0 0 0 .8-9.9A7 7 0 0 0 10.3 11.2 6 6 0 0 0 9 23z"/><rect x="14" y="15.5" width="5" height="7.5" rx="1"/></symbol>
   <symbol id="i-door-shut" viewBox="0 0 16 22"><rect x="1.5" y="1.5" width="13" height="19" rx="2.5"/><circle cx="11" cy="11.5" r="1.1"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5"/><path d="M3.5 3.5v5h5"/></symbol>
   <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7L4 12l5 5"/><path d="M4 12h9a6 6 0 0 1 0 12"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5L12 4l8 7.5"/><path d="M6.5 10v9.5h11V10"/><path d="M10 19.5v-5h4v5"/></symbol>
   <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></symbol>
@@ -52,10 +53,10 @@
 
 <header class="topbar">
   <div class="topbar__main">
-    <a class="brand" href="#/home" data-t-label="app.title"><svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-brand"/></svg><span>Fix My Cloud</span></a>
-    <a class="link topbar__nav" id="nav-home" href="#/home"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"/></svg><span data-t="nav.home"></span></a>
-    <a class="link" id="nav-board" href="#/board" data-t="nav.board"></a>
-    <button class="btn btn--ghost reset-btn" id="nav-reset" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-undo"/></svg><span data-t="nav.reset"></span></button>
+    <a class="brand" href="#/home" data-t-label="app.title"><svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-brand"/></svg><span class="brand__name">Fix My Cloud</span></a>
+    <a class="navpill topbar__nav" id="nav-home" href="#/home"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"/></svg><span data-t="nav.home"></span></a>
+    <a class="navpill" id="nav-board" href="#/board" data-t="nav.board"></a>
+    <button class="navpill navpill--reset" id="nav-reset" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reset"/></svg><span data-t="nav.reset"></span></button>
   </div>
   <span class="seg" role="group" data-t-label="lang.label">
     <button type="button" data-lang="en" aria-pressed="true">EN</button>
@@ -246,8 +247,7 @@
   <p class="err" data-t="footer.legal"></p>
   <p class="err" data-t="footer.practice"></p>
   <p class="err" data-t="footer.gender"></p>
-  <p class="err"><a class="link" id="how-to" href="#/home" data-t="nav.how"></a></p>
-  <p class="footer__reset"><button class="btn btn--ghost reset-btn" id="reset-all" type="button" data-t="footer.reset"></button></p>
+  <p class="footer__links"><a class="link" id="how-to" href="#/home" data-t="nav.how"></a><button class="btn btn--ghost reset-btn" id="reset-all" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reset"/></svg><span data-t="footer.reset"></span></button></p>
   <p class="err" id="storage-note" data-t="err.storage" hidden></p>
 </footer>
 
