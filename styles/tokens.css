@@ -53,6 +53,8 @@
   --dur-base: 200ms;
   --dur-slow: 280ms;
   --dur-mood: 900ms; /* night turning into dawn */
+  --dur-intro: 400ms; /* the opening scene. Only the system reduced-motion setting shortens it */
+  --dur-failsafe: 8s;
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --stagger-chip: 40ms;
   --stagger-node: 60ms;
@@ -62,6 +64,8 @@
 /* Reduced motion: every transition becomes an instant state change. */
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --dur-intro: 0ms;
+    --dur-failsafe: 0s;
     --dur-fast: 0ms;
     --dur-base: 0ms;
     --dur-slow: 0ms;

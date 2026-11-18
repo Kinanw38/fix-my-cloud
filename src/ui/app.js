@@ -4,7 +4,7 @@
 //   #/level/<id>  open a level      #/board  the incident board      #/run/<easy|full>/<seed>  a shuffle run
 import { $ } from './dom.js';
 import { initLang, setLang, t, tx } from './i18n.js';
-import { initMotion, swap } from './motion.js';
+import { initMotion, swap, motionOff } from './motion.js';
 import { app, S } from './state.js';
 import { get, set, solvedIds, storageOk } from './store.js';
 import { manifest } from '../levels/manifest.js';
@@ -116,8 +116,18 @@ $('#banner-reload').addEventListener('click', () => location.reload());
 document.addEventListener('fmc:next', () => { const n = nextTarget(); location.hash = n ? `#/level/${n}` : '#/board'; });
 if (!storageOk()) $('#storage-note').hidden = false;
 window.addEventListener('hashchange', route);
-route().finally(() => {
+// The opening scene stays at least a moment (so it never flashes), then fades into the game.
+const splash = $('#splash');
+function leaveSplash() {
+  const wait = navigator.webdriver ? 0 : Math.max(0, 1100 - performance.now()); // automated tests skip the minimum
+  return new Promise((done) => setTimeout(() => {
+    splash?.classList.add('is-done');
+    setTimeout(() => { splash?.remove(); done(); }, motionOff() ? 0 : 450); // = --dur-intro plus a little
+  }, wait));
+}
+route().finally(async () => {
   booted = true;
+  await leaveSplash();
   const open = app.levels.get(location.hash.match(/^#\/level\/([\w-]+)/)?.[1]); // only on a level screen
   if (open) maybeWelcomeBack(tx(open.title));
   // Quietly load the other levels after the first screen is up: switching levels and opening the board become instant.

@@ -31,6 +31,7 @@ export async function boot(page, { lang = 'en', hash = '', brief = false, ask = 
   const ids = brief ? [] : allLevels.map((l) => l.id);
   await page.addInitScript(([l, read, ask, solved]) => { try { if (!sessionStorage.getItem('fmc.seeded')) { sessionStorage.setItem('fmc.seeded', '1'); if (solved.length) localStorage.setItem('fmc.solved', JSON.stringify(solved)); } if (!ask) localStorage.setItem('fmc.noask', 'true'); localStorage.setItem('fmc.lang', JSON.stringify(l)); localStorage.setItem('fmc.welcome', 'true'); localStorage.setItem('fmc.briefed', JSON.stringify(read)); } catch {} }, [lang, ids, ask, solved]);
   await page.goto(hash ? `./#${hash}` : './');
+  await page.locator('#splash').waitFor({ state: 'detached' });
   await page.locator('#alert:visible, #brief-title:visible, #board-title:visible, #level-error-title:visible').first().waitFor();
 }
 
