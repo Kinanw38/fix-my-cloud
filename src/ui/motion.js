@@ -27,10 +27,10 @@ export function initMotion(sceneEl) {
 }
 
 // A short fade hides a palette or language swap. Instant when motion is off.
-export function swap(fn) {
-  if (motionOff()) { fn(); return; }
+export function swap(fn, instant = false) {
+  if (instant || motionOff()) { fn(); return Promise.resolve(); }
   document.body.classList.add('is-swapping');
-  setTimeout(() => { fn(); document.body.classList.remove('is-swapping'); }, 200); // = --dur-base
+  return new Promise((done) => setTimeout(() => { fn(); document.body.classList.remove('is-swapping'); done(); }, 200)); // = --dur-base
 }
 
 // Night to dawn: nothing disappears. For a moment every colour is allowed to change slowly (see .is-mood in screen.css).

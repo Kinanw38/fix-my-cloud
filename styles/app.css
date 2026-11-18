@@ -169,19 +169,17 @@ html[dir="rtl"] .topbar__main { direction: rtl; }
 .topbar .seg { margin-inline-start: auto; }
 
 /* Opening scene: shown at once on every visit, then it fades into the game. A sun rises behind the cloud, a line fills. */
-.splash { position: fixed; inset: 0; z-index: 100; display: grid; place-content: center; justify-items: center; gap: var(--s-4); background: var(--bg); pointer-events: none; transition: opacity calc(var(--dur-intro) * 1.5) var(--ease), transform calc(var(--dur-intro) * 1.5) var(--ease); /* if the script never finishes, it still leaves after a while */ animation: splash-failsafe 0s var(--dur-failsafe) forwards; }
-.splash.is-done { opacity: 0; transform: scale(1.03); }
+.splash { position: fixed; inset: 0; z-index: 100; display: grid; place-content: center; justify-items: center; gap: var(--s-4); background: var(--bg); pointer-events: none; transition: opacity calc(var(--dur-intro) * 1.5) var(--ease); /* if the script never finishes, it still leaves after a while */ animation: splash-failsafe 0s var(--dur-failsafe) forwards; }
+.splash.is-done { opacity: 0; }
 .splash__art { position: relative; display: grid; place-items: center; inline-size: 7rem; block-size: 7rem; }
-.splash__sun { position: absolute; inline-size: 6rem; block-size: 6rem; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line-strong); opacity: 0; transform: scale(0.85); animation: splash-sun calc(var(--dur-intro) * 3) var(--ease) forwards; }
-.splash__mark { position: relative; inline-size: 4.5rem; block-size: 4.5rem; opacity: 0; transform: translateY(var(--rise)); animation: splash-in calc(var(--dur-intro) * 2) var(--ease) forwards; }
-.splash__name { margin: 0; font: 700 1.25rem / 1 var(--font-ui); letter-spacing: 0.02em; color: var(--text); opacity: 0; transform: translateY(var(--rise)); animation: splash-in calc(var(--dur-intro) * 2) var(--ease) calc(var(--dur-intro) * 1) forwards; }
+.splash__sun { position: absolute; inline-size: 6rem; block-size: 6rem; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line-strong); opacity: 0; animation: splash-sun calc(var(--dur-intro) * 3) var(--ease) forwards; }
+.splash__mark { position: relative; inline-size: 4.5rem; block-size: 4.5rem; opacity: 0; transform: translateY(0.5rem); animation: splash-in calc(var(--dur-intro) * 2) var(--ease) forwards; }
+.splash__name { margin: 0; font: 700 1.25rem / 1 var(--font-ui); letter-spacing: 0.02em; color: var(--text); opacity: 0; transform: translateY(0.5rem); animation: splash-in calc(var(--dur-intro) * 2) var(--ease) calc(var(--dur-intro) * 1) forwards; }
 .splash__bar { inline-size: 7rem; block-size: 3px; border-radius: 3px; background: var(--accent); opacity: 0.9; transform: scaleX(0); transform-origin: left center; animation: splash-bar calc(var(--dur-intro) * 4) var(--ease) forwards; }
 @keyframes splash-in { to { opacity: 1; transform: none; } }
-@keyframes splash-sun { to { opacity: 1; transform: none; } }
+@keyframes splash-sun { to { opacity: 1; } }
 @keyframes splash-bar { to { transform: scaleX(1); } }
 @keyframes splash-failsafe { to { opacity: 0; visibility: hidden; } }
-[data-loops="on"] .splash__art { animation: splash-float calc(var(--dur-intro) * 8) var(--ease) calc(var(--dur-intro) * 2) infinite alternate; }
-@keyframes splash-float { from { transform: none; } to { transform: translateY(-0.3rem); } }
 
 /* Top-bar buttons: quiet pills. The page you are on is marked. Hover lifts a little. */
 .navpill { display: inline-flex; align-items: center; gap: var(--s-2); min-block-size: 2.25rem; padding: 0 var(--s-3); border: 1px solid transparent; border-radius: 999px; background: transparent; color: var(--muted); font: 500 var(--fs-small) / 1 var(--font-ui); text-decoration: none; cursor: pointer; transition: transform var(--dur-fast) var(--ease), background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease); }

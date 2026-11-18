@@ -47,20 +47,20 @@ function show(view) {
 let booted = false; // do not steal focus on the very first load
 async function showLevel(id) {
   const level = await loadLevel(id);
-  if (!level) { swap(() => { show('level'); $('#level-body').hidden = true; $('#level-error').hidden = false; $('#level-error-title').focus(); }); return; }
+  if (!level) { await swap(() => { show('level'); $('#level-body').hidden = true; $('#level-error').hidden = false; $('#level-error-title').focus(); }, !booted); return; }
   if (app.run && !app.run.ids.includes(id)) app.run = null;
   if (app.run) app.run.i = app.run.ids.indexOf(id);
   const takeFocus = booted; // decided now, so the very first load never steals focus
   try {
-    swap(() => {
+    await swap(() => {
       show('level'); $('#level-error').hidden = true; $('#level-body').hidden = false;
       openLevel(level); $('#run-chip').hidden = !app.run;
       if (app.run) $('#run-chip').textContent = t('board.runActive', { i: app.run.i + 1, n: app.run.ids.length, seed: app.run.seed });
       if (takeFocus) $('#task-goal').focus({ preventScroll: true });
       if (app.pendingTour && S.briefed) { app.pendingTour = false; startTour(); }
-    });
+    }, !booted);
     set('last', id);
-  } catch (e) { console.error(e); swap(() => { show('level'); $('#level-body').hidden = true; $('#level-error').hidden = false; }); }
+  } catch (e) { console.error(e); await swap(() => { show('level'); $('#level-body').hidden = true; $('#level-error').hidden = false; }, !booted); }
 }
 
 const firstUnsolved = () => manifest.find((m) => !solvedIds().has(m.id))?.id ?? manifest[0].id;
@@ -68,12 +68,12 @@ const firstUnsolved = () => manifest.find((m) => !solvedIds().has(m.id))?.id ?? 
 async function showHome() {
   const p1 = await loadLevel(manifest[0].id);
   if (!p1) { await showBoard(); return; }
-  swap(() => { show('home'); renderHome(p1, solvedIds().size > 0); $('#home-title').focus({ preventScroll: true }); });
+  await swap(() => { show('home'); renderHome(p1, solvedIds().size > 0); $('#home-title').focus({ preventScroll: true }); }, !booted);
 }
 
 async function showBoard() {
   await loadAll();
-  swap(() => { show('board'); renderBoard(); $('#board-title').focus({ preventScroll: true }); });
+  await swap(() => { show('board'); renderBoard(); $('#board-title').focus({ preventScroll: true }); }, !booted);
 }
 
 async function startRun(mode, seed) {
@@ -119,7 +119,9 @@ if (!storageOk()) $('#storage-note').hidden = false;
 window.addEventListener('hashchange', route);
 // The opening scene stays at least a moment (so it never flashes), then fades into the game.
 const splash = $('#splash');
-function leaveSplash() {
+const twoFrames = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+async function leaveSplash() {
+  await twoFrames(); // the first screen is painted before the scene starts to fade
   const wait = navigator.webdriver ? 0 : Math.max(0, 1100 - performance.now()); // automated tests skip the minimum
   return new Promise((done) => setTimeout(() => {
     splash?.classList.add('is-done');
